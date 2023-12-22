@@ -7,15 +7,16 @@ const Stopwatch = () => {
 
   useEffect(() => {
     let interval;
-
+  
     if (isRunning) {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, 1000);
     }
-
+  
     return () => clearInterval(interval);
   }, [isRunning]);
+  
 
   const startStopwatch = () => {
     setIsRunning(true);
@@ -28,13 +29,13 @@ const Stopwatch = () => {
   const resetStopwatch = () => {
     setTime(0);
     setIsRunning(false);
-  };
+  };  
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `Time: ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-  };
+  };  
 
   return (
     <div className="stopwatch">
