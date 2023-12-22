@@ -1,0 +1,16 @@
+/* Stopwatch.css */
+.stopwatch {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .time {
+    font-size: 2em;
+    margin: 20px;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+  
