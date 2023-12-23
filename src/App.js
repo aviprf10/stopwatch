@@ -1,63 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
+import { useEffect, useRef, useState } from "react";
+import "./Styles.css";
 
-const Stopwatch = () => {
-  const [time, setTime] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
+const format = (timer) => {
+  const mins = Math.floor(timer / 60);
+  timer %= 60;
+  return `${mins}:${timer < 10 ? "0" : ""}${timer}`;
+};
+
+export default function App() {
+  const [isActivated, setisActivated] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const timerId = useRef(null);
+
+  const toggleHandler = () => {
+    setisActivated(!isActivated);
+  };
+
+  const resetHandler = () => {
+    setTimer(0);
+    setisActivated(false);
+  };
 
   useEffect(() => {
-    let interval;
+    let intervalID;
 
-    if (isRunning) {
-      interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
+    if (isActivated) {
+      intervalID = setInterval(() => {
+        setTimer((prevTimer) => prevTimer + 1);
       }, 1000);
     }
 
-    return () => clearInterval(interval);
-  }, [isRunning]);
-
-  const startStopwatch = () => {
-    setIsRunning(true);
-  };
-
-  const stopStopwatch = () => {
-    setIsRunning(false);
-  };
-
-  const resetStopwatch = () => {
-    setTime(0);
-    setIsRunning(false);
-  };
-
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-  };
+    return () => {
+      clearInterval(intervalID);
+    };
+  }, [isActivated, timer]);
 
   return (
-    <div className="stopwatch">
+    <div className="App">
       <h1>Stopwatch</h1>
-      <div className="time">{formatTime(time)}</div>
-      <div className="buttons">
-        {isRunning ? (
-          <button onClick={stopStopwatch}>Stop</button>
-        ) : (
-          <button onClick={startStopwatch}>Start</button>
-        )}
-        <button onClick={resetStopwatch}>Reset</button>
-      </div>
+      <p>{format(timer)}</p>
+      <button onClick={toggleHandler}>{isActivated ? "Stop" : "Start"}</button>
+      <button onClick={resetHandler}>Reset</button>
     </div>
   );
-};
-
-const App = () => {
-  return (
-    <div className="app">
-      <Stopwatch />
-    </div>
-  );
-};
-
-export default App;
+}
