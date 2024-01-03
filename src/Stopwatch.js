@@ -34,11 +34,11 @@ export default function Stopwatch(){
   };
 
   return (
-    <div>
+    <div>  
       <hi>Stopwatch</hi>
       <p>Time: {formatTime(elapsedTime)}</p>
       <button onClick={startstop}>{isRunning ? "Stop" : "Start"}</button>
       <button onClick={reset}>Reset</button>
-    </div>
+    </div>  
   );
 }
