@@ -1,46 +1,44 @@
-import { useEffect, useRef, useState } from "react";
-import "./Styles.css";
+import React, { useState, useEffect } from 'react';
+import './Stopwatch.css';
 
-const format = (timer) => {
-  const mins = Math.floor(timer / 60);
-  timer %= 60;
-  return `${mins}:${timer < 10 ? "0" : ""}${timer}`;
-};
-
-export default function App() {
-  const [isActivated, setisActivated] = useState(false);
-  const [timer, setTimer] = useState(0);
-  const timerId = useRef(null);
-
-  const toggleHandler = () => {
-    setisActivated(!isActivated);
-  };
-
-  const resetHandler = () => {
-    setTimer(0);
-    setisActivated(false);
-  };
+export default function Stopwatch(){
+  const [isRunning, setIsRunning] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
     let intervalID;
 
-    if (isActivated) {
+    if (isRunning) {
       intervalID = setInterval(() => {
-        setTimer((prevTimer) => prevTimer + 1);
+          setElapsedTime((prevElapsedTime) => prevElapsedTime + 1)
       }, 1000);
+    }else{
+      clearInterval(intervalID);
     }
 
-    return () => {
-      clearInterval(intervalID);
-    };
-  }, [isActivated, timer]);
+    return () => clearInterval(intervalID);
+  }, [isRunning]);
+
+  const startstop = () => {
+    setIsRunning((prevIsRunning) => !prevIsRunning);
+  };
+  const reset = () => {
+    setIsRunning(false);
+    setElapsedTime(0);
+  }
+
+  const formatTime = (seconds) =>{
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
   return (
-    <div className="App">
-      <h1>Stopwatch</h1>
-      <p>{format(timer)}</p>
-      <button onClick={toggleHandler}>{isActivated ? "Stop" : "Start"}</button>
-      <button onClick={resetHandler}>Reset</button>
-    </div>
+    <div>  
+      <hi>Stopwatch</hi>
+      <p>Time: {formatTime(elapsedTime)}</p>
+      <button onClick={startstop}>{isRunning ? "Stop" : "Start"}</button>
+      <button onClick={reset}>Reset</button>
+    </div>  
   );
 }
