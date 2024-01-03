@@ -35,7 +35,7 @@ export default function Stopwatch(){
 
   return (
     <div>  
-      <hi>Stopwatch</hi>
+      <h1>Stopwatch</h1>
       <p>Time: {formatTime(elapsedTime)}</p>
       <button onClick={startstop}>{isRunning ? "Stop" : "Start"}</button>
       <button onClick={reset}>Reset</button>
